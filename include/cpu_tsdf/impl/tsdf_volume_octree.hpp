@@ -202,9 +202,10 @@ cpu_tsdf::TSDFVolumeOctree::updateVoxel (
     w_new *= (1 - std::min(pt.z / 10., 1.)); // Scales s.t. at 10m it's worthless
   if (weight_by_variance_ && voxel->nsample_ > 5)
     w_new *= std::exp (logNormal (d_new, voxel->d_, voxel->getVariance ()));
-  if (integrate_color_)
-    voxel->addObservation (d_new, w_new, max_weight_, pt.r, pt.g, pt.b);
-  else
+  // NOTE: Kelsey: Commented out due to compile-time errors using PointXYZ
+  //if (integrate_color_)
+  //  voxel->addObservation (d_new, w_new, max_weight_, pt.r, pt.g, pt.b);
+  //else
     voxel->addObservation (d_new, w_new, max_weight_);
   if (voxel->d_ < -0.99)
     return (0);
