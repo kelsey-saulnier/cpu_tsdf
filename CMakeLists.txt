@@ -33,6 +33,12 @@ find_package(Boost COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 
+find_package(catkin REQUIRED)
+catkin_package(
+  INCLUDE_DIRS include
+  DEPENDS Boost PCL
+  LIBRARIES cpu_tsdf
+)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
@@ -46,7 +52,14 @@ add_library (cpu_tsdf SHARED
               src/lib/marching_cubes_tsdf_octree.cpp)
 
             target_link_libraries (cpu_tsdf ${PCL_LIBRARIES})
-install(TARGETS cpu_tsdf DESTINATION lib${LIB_SUFFIX})
+#install(TARGETS cpu_tsdf DESTINATION lib${LIB_SUFFIX})
+# Changed to this catkin version from the above base version to make sure the library
+# is going to the right place.
+install(TARGETS cpu_tsdf
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  )
 
 # Create the executables
 add_executable (tsdf2mesh src/prog/tsdf2mesh.cpp)
