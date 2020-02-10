@@ -1,39 +1,39 @@
 /*
  * Copyright (c) 2013-, Stephen Miller
  * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, 
- * with or without modification, are permitted provided 
+ *
+ * Redistribution and use in source and binary forms,
+ * with or without modification, are permitted provided
  * that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the 
- * above copyright notice, this list of conditions 
+ *
+ * 1. Redistributions of source code must retain the
+ * above copyright notice, this list of conditions
  * and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the 
- * above copyright notice, this list of conditions and 
- * the following disclaimer in the documentation and/or 
+ * 2. Redistributions in binary form must reproduce the
+ * above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or
  * other materials provided with the distribution.
- * 
- * 3. Neither the name of the copyright holder nor the 
+ *
+ * 3. Neither the name of the copyright holder nor the
  * names of its contributors may be used to endorse or
- * promote products derived from this software without 
+ * promote products derived from this software without
  * specific prior written permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS 
- * AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED 
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS
+ * AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
- * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL 
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
  * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF 
- * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
- * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
- * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -79,7 +79,8 @@ cpu_tsdf::MarchingCubesTSDFOctree::setInputTSDF (cpu_tsdf::TSDFVolumeOctree::Con
   // Initialize size_voxel_ which is needed by pcl::MarchingCubes::createSurface
   // If left uninitialized createSurface creates erroneous coordinates for the mesh
   getBoundingBox();
-  size_voxel_ = (upper_boundary_ - lower_boundary_)* Eigen::Array3f(res_x_, res_y_, res_z_).inverse();
+  // size_voxel_ does not exist in pcl 1.7
+  //size_voxel_ = (upper_boundary_ - lower_boundary_)* Eigen::Array3f(res_x_, res_y_, res_z_).inverse();
 }
 
 void
@@ -104,7 +105,7 @@ cpu_tsdf::MarchingCubesTSDFOctree::getGridValue (Eigen::Vector3i pos)
   tsdf_volume_->getDepthTruncationLimits (max_dist_pos, max_dist_neg);
   return (d * max_dist_neg); //was fabs
 }
-    
+
 void
 cpu_tsdf::MarchingCubesTSDFOctree::performReconstruction (pcl::PolygonMesh &output)
 {
@@ -141,9 +142,9 @@ cpu_tsdf::MarchingCubesTSDFOctree::performReconstruction (pcl::PolygonMesh &outp
     output.polygons[i] = v;
   }
 }
-    
+
 bool
-cpu_tsdf::MarchingCubesTSDFOctree::getValidNeighborList1D (std::vector<float> &leaf, 
+cpu_tsdf::MarchingCubesTSDFOctree::getValidNeighborList1D (std::vector<float> &leaf,
                                                      Eigen::Vector3i &index3d)
 {
   leaf = std::vector<float> (8, 0.0f);
